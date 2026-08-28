@@ -11,7 +11,8 @@ try:
     print("Conectado com sucesso!!" if conexao.is_connected() else "Falha na conexão.")
     cursor = conexao.cursor()
 
-    cursor.execute("CREaTE DATABASE eventos")
+    cursor.execute("CREATE DATABASE eventos")
+    cursor.execute("USE EVENTOS")
     dados = cursor.fetchall ()
 
     for linha in dados:
