@@ -12,7 +12,7 @@ try:
     cursor = conexao.cursor()
 
     cursor.execute("CREATE DATABASE eventos")
-    cursor.execute("USE EVENTOS")
+    cursor.execute("USE eventos")
     dados = cursor.fetchall ()
 
     for linha in dados:
