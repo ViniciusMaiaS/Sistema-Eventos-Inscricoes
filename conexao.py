@@ -2,21 +2,18 @@ import mysql.connector
 
 try:
     conexao = mysql.connector.connect (
-    host="localhost",
-    user="root",
-    password="toor",
-    database="biblioteca"
+        host="localhost",
+        user="root",
+        password="toor",
 )
     #OPERADOR TERNÁRIO
     print("Conectado com sucesso!!" if conexao.is_connected() else "Falha na conexão.")
     cursor = conexao.cursor()
 
-    cursor.execute("CREATE DATABASE eventos")
+    cursor.execute("CREATE DATABASE IF NOT EXISTS eventos")
     cursor.execute("USE eventos")
-    dados = cursor.fetchall ()
 
-    for linha in dados:
-        print(linha)
+    print("Banco de dados 'eventos' selecionado com sucesso!")
 
 except mysql.connector.Error as erro:
     print(f"Ocorreu um erro: {erro}")
