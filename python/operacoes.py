@@ -8,7 +8,6 @@ try:
         host="localhost",
         user="root",
         password="toor",
-        database="eventos"
     )
 
     print("Conectado com sucesso!")
