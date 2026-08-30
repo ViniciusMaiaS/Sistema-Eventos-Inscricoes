@@ -15,6 +15,21 @@ try:
 
     cursor = conexao.cursor()
 
+    # INSERT
+    cursor.execute(
+        """
+        INSERT INTO participante (nome, email, telefone)
+        VALUES (%s, %s, %s)
+        """,
+        ("Ana Souza", "ana@email.com", "11999999999")
+    )
+
+    conexao.commit()
+
+    id_participante = cursor.lastrowid
+
+    print("\nParticipante inserido!")
+
     # SELECT 1
     cursor.execute("SELECT * FROM participante")
     resultado = cursor.fetchall()
@@ -23,67 +38,41 @@ try:
     for participante in resultado:
         print(participante)
 
-    # SELECT 2 com WHERE
-    cursor.execute(
-        "SELECT * FROM palestra WHERE id_evento = %s",
-        (1,)
-    )
-
-    resultado = cursor.fetchall()
-
-    print("\nPalestras do evento 1:")
-    for palestra in resultado:
-        print(palestra)
-
-    # SELECT 3 com JOIN
-    cursor.execute("""
-        SELECT participante.nome, palestra.titulo, evento.nome
-        FROM inscricao
-        JOIN participante
-        ON inscricao.id_participante = participante.id_participante
-        JOIN palestra
-        ON inscricao.id_palestra = palestra.id_palestra
-        JOIN evento
-        ON palestra.id_evento = evento.id_evento
-    """)
-
-    resultado = cursor.fetchall()
-
-    print("\nInscrições:")
-    for inscricao in resultado:
-        print(inscricao)
-
-    # INSERT
-    cursor.execute(
-        "INSERT INTO participante (nome, email, telefone) VALUES (%s, %s, %s)",
-        ("Ana Souza", "ana@email.com", "11999999999")
-    )
-
-    conexao.commit()
-
-    id = cursor.lastrowid
-
-    print("\nParticipante inserido!")
-
     # UPDATE
     cursor.execute(
-        "UPDATE participante SET telefone = %s WHERE id_participante = %s",
-        ("11888888888", id)
+        """
+        UPDATE participante
+        SET telefone = %s
+        WHERE id_participante = %s
+        """,
+        ("11888888888", id_participante)
     )
 
     conexao.commit()
 
-    print("Participante atualizado!")
+    print("\nParticipante atualizado!")
+
+    # Verifica UPDATE
+    cursor.execute(
+        "SELECT * FROM participante WHERE id_participante = %s",
+        (id_participante,)
+    )
+
+    print("\nParticipante após atualização:")
+    print(cursor.fetchone())
 
     # DELETE
     cursor.execute(
-        "DELETE FROM participante WHERE id_participante = %s",
-        (id,)
+        """
+        DELETE FROM participante
+        WHERE id_participante = %s
+        """,
+        (id_participante,)
     )
 
     conexao.commit()
 
-    print("Participante removido!")
+    print("\nParticipante removido!")
 
 except mysql.connector.Error as erro:
     print("Erro:", erro)
@@ -95,4 +84,4 @@ finally:
     if conexao:
         conexao.close()
 
-    print("Conexão fechada.")
+    print("\nConexão fechada.")
