@@ -52,7 +52,7 @@ try:
 
     print("\nParticipante atualizado!")
 
-    # Verifica UPDATE
+    # SELECT 2 - Verifica UPDATE com WHERE
     cursor.execute(
         "SELECT * FROM participante WHERE id_participante = %s",
         (id_participante,)
@@ -60,6 +60,24 @@ try:
 
     print("\nParticipante após atualização:")
     print(cursor.fetchone())
+
+    # SELECT 3 - JOIN
+    cursor.execute(
+        """
+        SELECT participante.nome, palestra.titulo
+        FROM inscricao
+        JOIN participante
+            ON inscricao.id_participante = participante.id_participante
+        JOIN palestra
+            ON inscricao.id_palestra = palestra.id_palestra
+        """
+    )
+
+    resultado = cursor.fetchall()
+
+    print("\nParticipantes e suas palestras:")
+    for linha in resultado:
+        print(linha)
 
     # DELETE
     cursor.execute(
